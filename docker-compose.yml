@@ -1,0 +1,51 @@
+version: '3'
+services:
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - 8876:80
+    depends_on:
+      - app
+    container_name: lara_airlines_nginx
+
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/app/Dockerfile
+    volumes:
+      - ./:/var/www
+    depends_on:
+        - db
+    container_name: lara_airlines_app
+
+  db:
+    image: postgres:15.0
+    restart: always
+    volumes:
+      - ../2. Init Database:/docker-entrypoint-initdb.d
+      - ./data/lara_airlines:/var/lib/postgresql/data
+      - ./tmp/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: "lara_airlines"
+      POSTGRES_USER: "lara_airlines_dev"
+      POSTGRES_PASSWORD: "lara_airlines_pass"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lara_airlines_dev -d lara_airlines"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 4G
+    container_name: lara_airlines_db
+
+  
