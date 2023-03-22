@@ -14,7 +14,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: ./docker/app/backend/Dockerfile
+      dockerfile: ./docker/app/Dockerfile
     volumes:
       - ./:/var/www
     depends_on:
@@ -25,7 +25,7 @@ services:
     image: postgres:15.0
     restart: always
     volumes:
-      - ./2. Init Database:/docker-entrypoint-initdb.d
+      - ../2. Init Database:/docker-entrypoint-initdb.d
       - ./data/lara_airlines:/var/lib/postgresql/data
       - ./tmp/db:/var/lib/postgresql/data
     environment:
@@ -47,14 +47,3 @@ services:
           cpus: '1'
           memory: 4G
     container_name: lara_airlines_db
-
-  # node:
-  #   build:
-  #     context: .
-  #     dockerfile: ./docker/app/node/Dockerfile
-  #   volumes:
-  #     - ./:/var/www
-  #     - ./vue3:/var/www
-  #     - ./tailwind:/var/www/tailwind
-  #   container_name: lara_airlines_node
-

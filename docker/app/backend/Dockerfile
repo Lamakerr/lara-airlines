@@ -2,6 +2,11 @@ FROM php:8.1-fpm
 
 # Copy composer.lock and composer.json
 COPY composer.lock composer.json /var/www/
+COPY tailwind.config.js /var/www/
+COPY postcss.config.js /var/www/
+COPY vite.config.js  /var/www/
+COPY package.json /var/www/
+COPY package-lock.json /var/www/
 
 # Set working directory
 WORKDIR /var/www
@@ -30,9 +35,8 @@ RUN docker-php-ext-install gd
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-# Install node
-RUN apt install -y nodejs npm | --install-dir=/usr/local/bin --filename=nodejs 
+#Install node
+RUN apt-get install -y nodejs
 
 # Add user for laravel application
 RUN groupadd -g 1000 www
@@ -48,13 +52,10 @@ COPY --chown=www:www . /var/www
 USER www
 
 # Expose port 9000 and start php-fpm server
-EXPOSE 9000
 RUN composer install
 RUN npm install
-RUN npm install -g @vue/cli@next
-RUN npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
 
-COPY tailwind.config.js .
-COPY postcss.config.js .
-COPY vite.config.js  .
-CMD ["php-fpm","npm","start"]
+
+
+EXPOSE 9000
+CMD ["php-fpm"]
