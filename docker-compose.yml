@@ -17,8 +17,6 @@ services:
       dockerfile: ./docker/app/backend/Dockerfile
     volumes:
       - ./:/var/www
-      - ./vue3:/var/www
-      - ./tailwind:/var/www/tailwind
     depends_on:
         - db
     container_name: lara_airlines_app
