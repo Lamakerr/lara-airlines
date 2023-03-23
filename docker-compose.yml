@@ -1,40 +1,42 @@
-version: '3'
+version: '3' # Версия формата файла конфигурации Docker Compose
 services:
-  nginx:
-    image: nginx:latest
-    volumes:
-      - ./:/var/www
-      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+  nginx: # Создание контейнера для Nginx
+    image: nginx:latest # Устанавливаем nginx последней версии
+    volumes: # Прокидываем Volumes
+      - ./:/var/www/
+      - ./.docker/nginx/conf.d/:/etc/nginx/conf.d/
     ports:
-      - 8876:80
+      - 80:80 # Заданем порт. 80 - это внутренний порт контейнера, а 8080 - порт на хост-машине
     depends_on:
-      - app
-    container_name: lara_airlines_nginx
+      - app # Добавляем зависимость от контейнера app
+    container_name: lara_air_nginx # Залаем название контейнера
 
   app:
-    build:
+    build: # Создание контейнера для PHP
       context: .
-      dockerfile: ./docker/app/Dockerfile
-    volumes:
-      - ./:/var/www
+      dockerfile: .docker/app/Dockerfile # Путь к файлу Dockerfile
+    volumes: # Прокидываем Volumes
+      - ./:/var/www/
     depends_on:
-        - db
-    container_name: lara_airlines_app
-
+      - db # Добавляем зависимость от контейнера db
+      - redis # Добавляем зависимость от контейнера Redis
+    container_name: lara_air_app # Залаем название контейнера
+    
   db:
-    image: postgres:15.0
-    restart: always
-    volumes:
-      - ../2. Init Database:/docker-entrypoint-initdb.d
+    image: postgres # Устанавливаем базу данных PosgreSQL
+    restart: always # Перезапуск контейнера после его падения
+    volumes: # Прокидываем Volumes для того чтобы при падении контейнера не потерять данные
+      - ./2. Init Database:/docker-entrypoint-initdb.d
       - ./data/lara_airlines:/var/lib/postgresql/data
       - ./tmp/db:/var/lib/postgresql/data
-    environment:
+    ports:
+      - 5432:5432 # Заданем порт для подключения к базе данных
+    environment: # Задаем переменные окружения для контейнера
       POSTGRES_DB: "lara_airlines"
       POSTGRES_USER: "lara_airlines_dev"
       POSTGRES_PASSWORD: "lara_airlines_pass"
       PGDATA: "/var/lib/postgresql/data/pgdata"
-    ports:
-      - 5432:5432
+    container_name: lara_air_db # Залаем название контейнера
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U lara_airlines_dev -d lara_airlines"]
       interval: 10s
@@ -46,4 +48,11 @@ services:
         limits:
           cpus: '1'
           memory: 4G
-    container_name: lara_airlines_db
+
+  redis:
+    image: redis:latest # Устанавливаем Redis последней версии
+    volumes:
+      - ./.data/redis:/data # Прокидываем Volumes для хранения данных Redis
+    ports:
+      - 6379:6379 # Задаем порт для подключения к Redis
+    container_name: lara_air_redis # Задаем название контейнера Redis
