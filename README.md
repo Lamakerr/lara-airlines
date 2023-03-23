@@ -29,4 +29,4 @@
 <p>Если при загрузке страницы вы видете это. То все успешно!</p>
 </ul>
 [![https://github.com/Lamakerr/lara-airlines/blob/main/resources/svg/example.png](https://github.com/Lamakerr/lara-airlines/blob/main/resources/svg/example.png "https://github.com/Lamakerr/lara-airlines/blob/main/resources/svg/example.png")](http://https://github.com/Lamakerr/lara-airlines/blob/main/resources/svg/example.png "https://github.com/Lamakerr/lara-airlines/blob/main/resources/svg/example.png")
-![img](https://github.com/Lamakerr/lara-airlines/blob/main/resources/svg/example.png)
+![img](https://github.com/Lamakerr/lara-airlines/main/resources/svg/example.png)
