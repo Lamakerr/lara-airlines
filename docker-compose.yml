@@ -21,7 +21,7 @@ services:
       - db # Добавляем зависимость от контейнера db
       - redis # Добавляем зависимость от контейнера Redis
     container_name: lara_air_app # Залаем название контейнера
-    
+
   db:
     image: postgres # Устанавливаем базу данных PosgreSQL
     restart: always # Перезапуск контейнера после его падения

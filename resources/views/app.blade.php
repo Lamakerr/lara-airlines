@@ -11,7 +11,7 @@
 @vite('resources/js/app.js')
 @vite('resources/css/app.css')
     <div id="app">
-  
+
     </div>
 
 
@@ -26,16 +26,13 @@
 
     <h1 class="text-3xl font-bold underline text-center">
     Тестовая выборка с БД PSQL
-        <br>
     </h1>
     <h3 class="text-3xl font-bold underline text-center p-20">
         <ul>
-        @foreach ($tests as $test)
-       <li>{{ $test->name }}</li> 
-    @endforeach
+            @foreach ($tests as $test)
+                <li>{{ $test->name }}</li>
+             @endforeach
         </ul>
     </h3>
-
-  
 </body>
 </html>
