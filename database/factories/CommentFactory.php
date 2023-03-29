@@ -16,7 +16,7 @@ class CommentFactory extends Factory
             '-180 days',
             '+ 179 days');
         return [
-            'name' => fake()->name,
+            'name' => fake()->words(3, true),
             'text' => fake()->realText(200),
             'status' => rand(0,1),
             'created_at' => $created_at,

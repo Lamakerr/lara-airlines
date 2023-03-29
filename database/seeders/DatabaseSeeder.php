@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\Airport;
 use App\Models\Comment;
+use App\Models\CommentUser;
 use App\Models\Contact;
 use App\Models\Coupon;
 use App\Models\Document;
@@ -29,21 +30,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
-
-
-        User::factory(50)->create();
         Role::factory(6)->create();
-        RoleUser::factory(50)->create();
+        User::factory(50)->create();
         Gender::factory(3)->create();
         DocumentType::factory(3)->create();
         Document::factory(250)->create();
         Contact::factory(150)->create();
         Comment::factory(150)->create();
+        CommentUser::factory(150)->create();
 
         $airports = collect(parseAirports());
         foreach ($airports->chunk(500) as $chunk){
-//            dd(array_slice($chunk->toArray(), 0, 3));
             Airport::query()->insert($chunk->toArray());
         }
 
